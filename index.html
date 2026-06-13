@@ -3,56 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My External Notes & Media</title>
+    <title>Developer Portal - Secure Node Login</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-            background-color: #f4f4f9;
-            color: #333;
-            line-height: 1.6;
-        }
-        h1 { color: #111; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin-top: 40px; }
-        .note-box { background: white; padding: 20px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .media-container { margin-top: 20px; background: #fff; padding: 15px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        img { max-width: 100%; height: auto; display: block; border-radius: 4px; margin-top: 10px; }
-        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-top: 10px; }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 4px; }
-        a { color: #0066cc; text-decoration: none; }
-        a:hover { text-decoration: underline; }
+        body { font-family: 'Courier New', monospace; background: #0c0f12; color: #00ff66; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-box { border: 1px solid #00ff66; padding: 30px; border-radius: 5px; background: #11161b; box-shadow: 0 0 15px rgba(0,255,102,0.2); width: 320px; }
+        h2 { text-align: center; margin-top: 0; font-size: 1.2rem; letter-spacing: 2px; }
+        label { display: block; margin: 15px 0 5px; font-size: 0.8rem; }
+        input { width: 100%; padding: 8px; background: #0c0f12; border: 1px solid #00ff66; color: #00ff66; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; margin-top: 20px; background: #00ff66; color: #0c0f12; border: none; font-weight: bold; cursor: pointer; }
+        button:hover { background: #00cc55; }
+        .error-msg { color: #ff3333; font-size: 0.75rem; text-align: center; margin-top: 15px; display: none; }
     </style>
 </head>
 <body>
 
-    <h1>📝 My Personal Notes</h1>
-    <div class="note-box">
-        <p><strong>Quick Reminders:</strong></p>
-        <ul>
-            <li>This page streams everything directly from the web with zero laptop overhead.</li>
-            <li>Double-click this file anytime to open it instantly.</li>
-        </ul>
-    </div>
-
-    <h1>📷 External Pictures</h1>
-    
-    <div class="media-container">
-        <p><strong>Image Title / Description:</strong></p>
-        <!-- Paste the direct web link to your image in the src="..." below -->
-        <img src="https://unsplash.com" alt="Sample Web Image">
-        <p><small>Source Link: <a href="https://unsplash.com" target="_blank">View Original Image</a></small></p>
-    </div>
-
-    <h1>📺 YouTube & Web Videos</h1>
-
-    <div class="media-container">
-        <p><strong>Tutorial Video:</strong></p>
-        <!-- The wrapper makes the YouTube video resize nicely on your screen -->
-        <div class="video-wrapper">
-            <!-- Replace the URL below with your YouTube Embed code -->
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/bqAje7mvU6s?si=p6zJwftpYFbaZ5bq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>"
-        </div>
+    <div class="login-box">
+        <h2>[ NODE_ACCESS_v4 ]</h2>
+        <p style="font-size: 0.7rem; text-align: center; color: #888;">Authorized Personnel Only</p>
+        
+        <label>Operator ID:</label>
+        <input type="text" placeholder="e.g., admin_01">
+        
+        <label>Security Token:</label>
+        <input type="password" placeholder="••••••••">
+        
+        <!-- This button clears the input and displays a fake error message -->
+        <button onclick="document.querySelector('.error-msg').style.display='block';">AUTHENTICATE</button>
+        
+        <div class="error-msg">⚠️ ERROR: Authentication timeout. Request rejected by gateway.</div>
     </div>
 
 </body>

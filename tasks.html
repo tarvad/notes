@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 30px auto; padding: 0 20px; background-color: #f7f9fa; color: #333; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; }
+        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        @media (max-width: 600px) { .grid-container { grid-template-columns: 1fr; } }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h3 { margin-top: 0; color: #34495e; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-top: 15px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 4px; }
+        a { color: #3498db; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <h1>📋 Daily Workspace & Dashboard</h1>
+
+    <div class="grid-container">
+        
+        <!-- CARD 1: DAILY TASK CHECKLIST -->
+        <div class="card">
+            <h3>Flight & Travel Tasks</h3>
+            <ul>
+                <li><input type="checkbox"> Confirm hotel check-in time</li>
+                <li><input type="checkbox"> Download offline maps of the new city</li>
+                <li><input type="checkbox"> Pack laptop charger and travel adapter</li>
+            </ul>
+        </div>
+
+        <!-- CARD 2: WEB BOOKMARKS / EXTERNAL LINKS -->
+        <div class="card">
+            <h3>Quick Links & Resources</h3>
+            <ul>
+                <li><a href="https://google.com" target="_blank">Google News Portal</a></li>
+                <li><a href="https://weather.com" target="_blank">Local Destination Weather</a></li>
+                <li><a href="https://google.com" target="_blank">Google Maps</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- MAIN MEDIA SECTION FOR VIDEOS -->
+    <div class="card" style="margin-top: 20px;">
+        <h3>Saved Study Videos / Media</h3>
+        <p>Streaming video playlist for the flight:</p>
+        <div class="video-container">
+            <!-- Replace with your chosen YouTube embed link -->
+            <iframe src="https://youtube.com" allowfullscreen></iframe>
+        </div>
+    </div>
+
+</body>
+</html>
