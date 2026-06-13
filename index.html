@@ -10,7 +10,7 @@
         h2 { text-align: center; margin-top: 0; font-size: 1.2rem; letter-spacing: 2px; }
         label { display: block; margin: 15px 0 5px; font-size: 0.8rem; }
         input { width: 100%; padding: 8px; background: #0c0f12; border: 1px solid #00ff66; color: #00ff66; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; margin-top: 20px; background: #00ff66; color: #0c0f12; border: none; font-weight: bold; cursor: pointer; }
+        button { width: 100%; padding: 10px; margin-top: 20px; background: #00ff66; color: #0c0c12; border: none; font-weight: bold; cursor: pointer; }
         button:hover { background: #00cc55; }
         .error-msg { color: #ff3333; font-size: 0.75rem; text-align: center; margin-top: 15px; display: none; }
     </style>
@@ -22,33 +22,38 @@
         <p style="font-size: 0.7rem; text-align: center; color: #888;">Authorized Personnel Only</p>
         
         <label>Operator ID:</label>
-        <input type="text" placeholder="e.g., admin_01">
+        <input type="text" id="username" placeholder="e.g., admin_01">
         
         <label>Security Token:</label>
-        <input type="password" placeholder="••••••••">
+        <!-- Crucial: The id must be exactly "securityToken" -->
+        <input type="password" id="securityToken" placeholder="••••••••" onkeydown="if(event.key==='Enter') executeLogin()">
         
-        <!-- This button clears the input and displays a fake error message -->
-        <button onclick="document.querySelector('.error-msg').style.display='block';">AUTHENTICATE</button>
+        <!-- Crucial: The button calls executeLogin() -->
+        <button onclick="executeLogin()">AUTHENTICATE</button>
         
-        <div class="error-msg">⚠️ ERROR: Authentication timeout. Request rejected by gateway.</div>
+        <div class="error-msg" id="errorBlock">⚠️ ERROR: Authentication timeout. Request rejected by gateway.</div>
     </div>
 
+    <script>
+        function executeLogin() {
+            // 1. Hide the error message in case it was showing from a blank click
+            document.getElementById('errorBlock').style.display = 'none';
 
- <script>
-        function login() {
-            var passwordInput = document.getElementById('password').value.trim();
+            // 2. Grab the exact text you typed into the Security Token box
+            var tokenInput = document.getElementById('securityToken').value.trim();
             
-            if (passwordInput !== "") {
-                // CHOOSE YOUR SECRET FOLDER NAME BELOW
-                // Replace "vault-node-xyz" with whatever folder name you want
-                var secretFolder = "paranoid";
-                
-                // Automatically routes to: vault-node-xyz/yourpassword.html
-                window.location.href = secretFolder + "/" + passwordInput + ".html";
+            // CHANGE THIS to your exact subfolder name on GitHub
+            var targetFolder = "paranoid"; 
+            
+            if (tokenInput !== "") {
+                // 3. Jump to the folder + your password + .html
+                window.location.href = targetFolder + "/" + tokenInput + ".html";
             } else {
-                document.getElementById('error').style.display = 'block';
+                // 4. Show error if you click button with an empty box
+                document.getElementById('errorBlock').style.display = 'block';
             }
         }
     </script>
+
 </body>
 </html>
