@@ -19,6 +19,14 @@
 </head>
 <body>
 
+
+ <!-- Place this anywhere in your secret page content body -->
+<button onclick="terminalLogout()" style="font-family: 'Courier New', monospace; background: #ff3333; color: #0c0f12; border: none; padding: 8px 15px; font-weight: bold; cursor: pointer; letter-spacing: 1px;">
+    [ DISCONNECT_NODE ]
+</button>
+
+
+
     <h1>// Diagnostics / Environment_Variables</h1>
 
     <!-- REAL FUNCTIONAL SEARCH BAR -->
@@ -67,5 +75,15 @@
         }
     </script>
 
+<script>
+    function terminalLogout() {
+        // 1. Reset the login attempt counters so they get fresh tries next time
+        sessionStorage.removeItem('login_attempts');
+        sessionStorage.removeItem('lockout_active');
+        
+        // 2. Hard reload the page location to scrub the screen and boot up the main terminal login
+        window.location.reload();
+    }
+</script>
 </body>
 </html>
