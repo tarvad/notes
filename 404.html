@@ -14,7 +14,6 @@
         button:hover { background: #00cc55; }
         .error-msg { color: #ff3333; font-size: 0.75rem; text-align: center; margin-top: 15px; font-weight: bold; line-height: 1.4; }
         
-        /* Lockout Styling overrides */
         .locked { border-color: #ff3333 !important; box-shadow: 0 0 25px rgba(255,51,51,0.4) !important; background: #161111 !important; color: #ff3333 !important; }
         .locked h2 { animation: blink 1s infinite; }
         .locked input { border-color: #552222; color: #552222; cursor: not-allowed; }
@@ -43,7 +42,6 @@
 
     <script>
         var attemptsLeft = sessionStorage.getItem('login_attempts');
-        
         if (attemptsLeft === null) {
             attemptsLeft = 2; 
         } else {
@@ -53,12 +51,10 @@
         var terminalBox = document.getElementById('terminalBox');
         var errorBlock = document.getElementById('errorBlock');
 
-        // Check if they are completely locked out
         if (attemptsLeft <= 0 || sessionStorage.getItem('lockout_active')) {
             sessionStorage.setItem('lockout_active', 'true');
             triggerLockout();
         } else {
-            // Update the layout with how many remaining tries they have
             document.getElementById('attempts').textContent = attemptsLeft;
         }
 
@@ -66,13 +62,10 @@
             terminalBox.classList.add('locked');
             document.getElementById('boxHeader').textContent = "[ TERMINAL_LOCKED ]";
             document.getElementById('boxSub').textContent = "SYSTEM LOCKOUT ACTIVE";
-            
-            // Disable inputs completely
             document.getElementById('username').disabled = true;
             document.getElementById('securityToken').disabled = true;
             document.getElementById('authBtn').disabled = true;
-            
-            errorBlock.innerHTML = "⚠ CRITICAL SECURITY THREAT OVERRIDE.<br>Terminal terminal signature blacklisted.<br>Contact system administrator.";
+            errorBlock.innerHTML = "⚠ CRITICAL SECURITY THREAT OVERRIDE.<br>Terminal network signature blacklisted.<br>Contact system administrator.";
         }
 
         function executeLogin() {
@@ -82,12 +75,15 @@
             var targetFolder = "vault-node-xyz"; 
             
             if (tokenInput !== "") {
-                // Drop down the counter by 1 before requesting the next file
                 var nextAttempts = attemptsLeft - 1;
                 sessionStorage.setItem('login_attempts', nextAttempts);
                 
-                // CRUCIAL: The "/" at the front resets the browser path context back to root!
-                window.location.href = "/" + targetFolder + "/" + tokenInput + ".html";
+                // DYNAMIC LOOKUP: Gets the root repository name from the current page path segments
+                var pathSegments = window.location.pathname.split('/');
+                var repoName = pathSegments[1]; 
+
+                // Builds the URL starting completely clean from the website root domain
+                window.location.href = window.location.origin + '/' + repoName + '/' + targetFolder + '/' + tokenInput + '.html';
             }
         }
     </script>
