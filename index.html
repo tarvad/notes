@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My External Notes & Media</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        h1 { color: #111; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin-top: 40px; }
+        .note-box { background: white; padding: 20px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .media-container { margin-top: 20px; background: #fff; padding: 15px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        img { max-width: 100%; height: auto; display: block; border-radius: 4px; margin-top: 10px; }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-top: 10px; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 4px; }
+        a { color: #0066cc; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <h1>📝 My Personal Notes</h1>
+    <div class="note-box">
+        <p><strong>Quick Reminders:</strong></p>
+        <ul>
+            <li>This page streams everything directly from the web with zero laptop overhead.</li>
+            <li>Double-click this file anytime to open it instantly.</li>
+        </ul>
+    </div>
+
+    <h1>📷 External Pictures</h1>
+    
+    <div class="media-container">
+        <p><strong>Image Title / Description:</strong></p>
+        <!-- Paste the direct web link to your image in the src="..." below -->
+        <img src="https://unsplash.com" alt="Sample Web Image">
+        <p><small>Source Link: <a href="https://unsplash.com" target="_blank">View Original Image</a></small></p>
+    </div>
+
+    <h1>📺 YouTube & Web Videos</h1>
+
+    <div class="media-container">
+        <p><strong>Tutorial Video:</strong></p>
+        <!-- The wrapper makes the YouTube video resize nicely on your screen -->
+        <div class="video-wrapper">
+            <!-- Replace the URL below with your YouTube Embed code -->
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/bqAje7mvU6s?si=p6zJwftpYFbaZ5bq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>"
+        </div>
+    </div>
+
+</body>
+</html>
