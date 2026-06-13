@@ -13,8 +13,6 @@
         button { width: 100%; padding: 10px; margin-top: 20px; background: #00ff66; color: #0c0c12; border: none; font-weight: bold; cursor: pointer; }
         button:hover { background: #00cc55; }
         .error-msg { color: #ff3333; font-size: 0.75rem; text-align: center; margin-top: 15px; font-weight: bold; line-height: 1.4; display: none; }
-        
-        /* Processing State */
         .loading-text { display: none; text-align: center; color: #00ff66; font-size: 0.8rem; margin-top: 15px; font-weight: bold; }
         
         /* Lockout Styling overrides */
@@ -25,7 +23,7 @@
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     </style>
 </head>
-<body id="mainBody">
+<body>
 
     <div class="login-box" id="terminalBox">
         <h2 id="boxHeader">[ NODE_ACCESS_v4 ]</h2>
@@ -33,13 +31,13 @@
         
         <div id="formFields">
             <label>Operator ID:</label>
-            <input type="text" id="username" placeholder="e.g., admin_01">
+            <!-- Added playClick() on input events -->
+            <input type="text" id="username" placeholder="e.g., admin_01" oninput="playClick()">
             <label>Security Token:</label>
-            <input type="password" id="securityToken" placeholder="••••••••" onkeydown="if(event.key==='Enter') executeLogin()">
+            <input type="password" id="securityToken" placeholder="••••••••" oninput="playClick()" onkeydown="if(event.key==='Enter') executeLogin()">
             <button onclick="executeLogin()" id="authBtn">AUTHENTICATE</button>
         </div>
         
-        <!-- Live Loading Status Bar -->
         <div class="loading-text" id="loadingBlock">CONNECTING TO GATEWAY...</div>
         
         <div class="error-msg" id="errorBlock">
@@ -49,6 +47,60 @@
     </div>
 
     <script>
+        // Web Audio API Audio Synthesizer Engine
+        var audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // Simulates a clean mechanical terminal keyclick
+        function playClick() {
+            initAudio();
+            if (!audioCtx) return;
+
+            var osc = audioCtx.createOscillator();
+            var gain = audioCtx.createGain();
+            
+            osc.type = 'triangle';
+            // Slight random pitch fluctuation makes it sound organic
+            osc.frequency.setValueAtTime(600 + Math.random() * 200, audioCtx.currentTime);
+            
+            // Short decay envelope for a punchy click sound
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.04);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.04);
+        }
+
+        // Simulates a system warning buzzer / low synth warning
+        function playErrorSound() {
+            initAudio();
+            if (!audioCtx) return;
+
+            var osc = audioCtx.createOscillator();
+            var gain = audioCtx.createGain();
+            
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+            
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 0.4);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.4);
+        }
+
+        // Execution Logic
         if (sessionStorage.getItem('login_attempts') === null) {
             sessionStorage.setItem('login_attempts', '3');
         }
@@ -76,6 +128,7 @@
         }
 
         function executeLogin() {
+            playClick(); // Click sound on authentication trigger
             if (sessionStorage.getItem('lockout_active')) return;
 
             var tokenInput = document.getElementById('securityToken').value.trim();
@@ -83,47 +136,40 @@
             
             if (tokenInput === "") return;
 
-            // Hide previous errors and show the artificial verification loader
             errorBlock.style.display = "none";
             loadingBlock.style.display = "block";
             
             var targetUrl = targetFolder + "/" + tokenInput + ".html";
 
-            // Add an intentional 1.5-second processing delay to feel like a real system check
             setTimeout(function() {
-                
-                // Fetch the actual file details from the background
                 fetch(targetUrl)
                 .then(function(response) {
                     if (response.ok) {
-                        // SUCCESS: Read the code inside your secret file directly
                         return response.text();
                     } else {
                         throw new Error("404");
                     }
                 })
                 .then(function(htmlContent) {
-                    // WIPE OUT THE LOGIN PAGE AND INJECT SECRET HTML
-                    // The URL bar never changes, but the whole page switches perfectly!
                     document.open();
                     document.write(htmlContent);
                     document.close();
                 })
                 .catch(function(error) {
-                    // FAILURE: Wrong password or missing file
                     loadingBlock.style.display = "none";
                     handleFailure();
                 });
-
-            }, 1500); // 1500ms = 1.5 second artificial delay
+            }, 1500); 
         }
 
         function handleFailure() {
+            playErrorSound(); // Buzzes immediately when access is denied
             attemptsLeft--;
             sessionStorage.setItem('login_attempts', attemptsLeft);
             
             if (attemptsLeft <= 0) {
                 triggerLockout();
+                playErrorSound(); // Double down on lockout
             } else {
                 document.getElementById('attempts').textContent = attemptsLeft;
                 errorBlock.style.display = "block";
