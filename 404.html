@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Portal - Secure Node Login</title>
+    <style>
+        body { font-family: 'Courier New', monospace; background: #0c0f12; color: #00ff66; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-box { border: 1px solid #00ff66; padding: 30px; border-radius: 5px; background: #11161b; box-shadow: 0 0 15px rgba(0,255,102,0.2); width: 320px; }
+        h2 { text-align: center; margin-top: 0; font-size: 1.2rem; letter-spacing: 2px; }
+        label { display: block; margin: 15px 0 5px; font-size: 0.8rem; }
+        input { width: 100%; padding: 8px; background: #0c0f12; border: 1px solid #00ff66; color: #00ff66; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; margin-top: 20px; background: #00ff66; color: #0c0c12; border: none; font-weight: bold; cursor: pointer; }
+        button:hover { background: #00cc55; }
+        .error-msg { color: #ff3333; font-size: 0.75rem; text-align: center; margin-top: 15px; font-weight: bold; line-height: 1.4; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>[ NODE_ACCESS_v4 ]</h2>
+        <p style="font-size: 0.7rem; text-align: center; color: #888;">Authorized Personnel Only</p>
+        <label>Operator ID:</label>
+        <input type="text" id="username" placeholder="e.g., admin_01">
+        <label>Security Token:</label>
+        <input type="password" id="securityToken" placeholder="••••••••" onkeydown="if(event.key==='Enter') executeLogin()">
+        <button onclick="executeLogin()">AUTHENTICATE</button>
+        
+        <!-- The Trick: This error is visible immediately when this fake 404 loads -->
+        <div class="error-msg" id="errorBlock">
+            ⚠ ERROR: Invalid credentials.<br>
+            You have <span id="attempts">2</span> authentication attempts remaining.
+        </div>
+    </div>
+    <script>
+        // Use sessionStorage to remember how many times they failed across pages
+        var attemptsLeft = sessionStorage.getItem('login_attempts');
+        if (attemptsLeft === null) {
+            attemptsLeft = 2; // First failure brings them here, so 2 left
+        } else {
+            attemptsLeft = parseInt(attemptsLeft);
+        }
+        
+        // Update the display text
+        document.getElementById('attempts').textContent = attemptsLeft;
+
+        function executeLogin() {
+            var tokenInput = document.getElementById('securityToken').value.trim();
+            var targetFolder = "vault-node-xyz"; 
+            
+            if (tokenInput !== "") {
+                // If they fail again, decrement their attempts before moving to the next page
+                var nextAttempts = attemptsLeft - 1;
+                if (nextAttempts < 0) nextAttempts = 0;
+                sessionStorage.setItem('login_attempts', nextAttempts);
+                
+                window.location.href = "/" + targetFolder + "/" + tokenInput + ".html";
+            }
+        }
+    </script>
+</body>
+</html>
