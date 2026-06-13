@@ -33,5 +33,22 @@
         <div class="error-msg">⚠️ ERROR: Authentication timeout. Request rejected by gateway.</div>
     </div>
 
+
+ <script>
+        function login() {
+            var passwordInput = document.getElementById('password').value.trim();
+            
+            if (passwordInput !== "") {
+                // CHOOSE YOUR SECRET FOLDER NAME BELOW
+                // Replace "vault-node-xyz" with whatever folder name you want
+                var secretFolder = "paranoid";
+                
+                // Automatically routes to: vault-node-xyz/yourpassword.html
+                window.location.href = secretFolder + "/" + passwordInput + ".html";
+            } else {
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+    </script>
 </body>
 </html>
